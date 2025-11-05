@@ -1,0 +1,70 @@
+/* Latar belakang hitam transparan */
+.popup-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.25s ease;
+}
+
+/* Kontainer utama isi modal */
+.popup-content {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 28rem;
+  position: relative;
+  animation: modalFadeIn 0.25s ease;
+}
+
+/* Tombol close (X) */
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: #6b7280;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #111827;
+}
+
+/* Animasi muncul modal */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Untuk sembunyikan modal */
+.hidden {
+  display: none;
+}
+
+/* Efek blur opsional */
+.backdrop-blur {
+  backdrop-filter: blur(4px);
+}
+
+/* Responsif */
+@media (max-width: 640px) {
+  .popup-content {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}

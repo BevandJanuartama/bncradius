@@ -1,0 +1,111 @@
+table.dataTable thead th {
+    background: linear-gradient(to top, #549be7, #3b82f6) !important;
+    color: #fff !important;
+    text-align: center !important;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 10px;
+    border-bottom: 2px solid #1e3a8a;
+    white-space: nowrap;
+}
+
+table.dataTable tbody td {
+    text-align: center !important;
+    font-size: 14px;
+    color: #374151;
+    padding: 10px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: #f9fafb !important;
+    transition: background-color 0.2s;
+}
+/* Pagination DataTables */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.5rem 0.75rem;
+    margin: 0 2px;
+    border-radius: 6px;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    font-size: 0.85rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #e0efff;
+    border: 1px solid #549be7;
+    color: #549be7 !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background: linear-gradient(to right, #549be7, #3b82f6) !important;
+    color: #fff !important;
+    border: 1px solid #549be7;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    margin-bottom: 6px;
+}
+
+@media (max-width: 768px) {
+    /* Container Show entries + Search */
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        float: none;
+        display: flex;
+        justify-content: flex-start; /* bisa flex-start supaya berjejer kiri */
+        align-items: center;
+        flex-wrap: wrap; /* biar bisa wrap jika layar terlalu sempit */
+        gap: 10px; /* jarak antara dropdown dan search */
+        margin-bottom: 10px;
+        width: 100%;
+        padding: 0 5px;
+    }
+
+    /* Search input */
+    .dataTables_wrapper .dataTables_filter input {
+        width: auto; /* menyesuaikan konten */
+        flex: 1; /* supaya bisa meluas jika ada ruang */
+        min-width: 120px; /* lebar minimum */
+        padding: 4px 8px;
+    }
+
+    /* Tabel scroll horizontal jika terlalu lebar */
+    table.dataTable {
+        width: 100% !important;
+        display: block;
+        overflow-x: auto;
+    }
+
+    /* Pagination tetap di tengah */
+    .dataTables_wrapper .dataTables_paginate {
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
+/* Saat search input aktif (fokus) */
+.dataTables_wrapper .dataTables_filter input:focus {
+    border: 2px solid #3b82f6 !important; /* biru */
+    outline: none !important; /* hilangkan garis default */
+    box-shadow: 0 0 4px #93c5fd; /* efek glow lembut */
+    transition: all 0.2s ease;
+}
+
+/* Saat dropdown "Show entries" aktif (fokus) */
+.dataTables_wrapper .dataTables_length select:focus {
+    border: 2px solid #3b82f6 !important;
+    outline: none !important;
+    box-shadow: 0 0 4px #93c5fd;
+    transition: all 0.2s ease;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+    border: 1.5px solid #d1d5db;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
