@@ -21,6 +21,7 @@
 
         .btn-gradient {
             background: linear-gradient(to right, #549BE7, #3B82F6) !important;
+            transition: all 0.3s ease;
         }
 
         /* ==== Efek dan Border ==== */
@@ -57,6 +58,37 @@
         .icon-gradient {
             color: #3B82F6 !important;
         }
+
+        .success-message {
+            background: linear-gradient(to right, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .error-list {
+            background: rgba(252, 165, 165, 0.1);
+            border: 2px solid rgba(252, 165, 165, 0.5);
+            color: #ef4444;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -81,6 +113,7 @@
             </h2>
             <p class="text-gray-600 mt-1 sm:block ml-14">Kelola akses administrator sistem</p>
         </div>
+
         <div class="mb-6 flex justify-end">
             <button id="openAddSubadminModal" onclick="openAddSubadminModal()"
                 class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 text-base hover:bg-blue-600 transition duration-300 shadow-md shadow-blue-500/40">
@@ -89,8 +122,14 @@
             </button>
         </div>
 
+        @if (session('success'))
+            <div class="success-message flex items-center">
+                <i class="fas fa-check-circle mr-3"></i>
+                {{ session('success') }}
+            </div>
+        @endif
 
-        {{-- Bagian Daftar Subadmin --}}
+        {{-- Bagian Daftar Subadmin (Tabel) --}}
         <div class="md:ml-0 p-0">
             <div class="bg-white shadow-xl rounded-2xl border border-gray-200 overflow-hidden">
                 <div class="primary-gradient-bg px-6 py-4">
@@ -107,7 +146,8 @@
                 </div>
 
                 <div class="bg-gray-50 px-6 py-4 border-b">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
+                    <div
+                        class="flex flex-col md:flex-row md:items-center md:justify-between space-y-3 md:space-y-0">
                         <div class="flex items-center space-x-2">
                             <div class="relative">
                                 <i
@@ -235,7 +275,7 @@
                                         <div class="flex flex-col items-center justify-center text-gray-500">
                                             <i class="fas fa-users text-4xl mb-4 text-gray-300"></i>
                                             <p class="text-lg font-medium">Belum ada data subadmin</p>
-                                            <p class="text-sm">Klik tombol "Tambah Subadmin Baru" untuk menambahkan</p>
+                                            <p class="text-sm">Klik tombol "Tambah Subadmin" untuk menambahkan</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -254,7 +294,6 @@
     </main>
 
 
-    <!-- 🔹 Modal Tambah Subadmin -->
     <div id="createModal" class="popup-modal hidden">
         <div id="popupContent" class="popup-content form-container p-6 w-full max-w-lg">
 
@@ -265,7 +304,20 @@
                 <h1 class="text-2xl font-bold text-gray-800 tracking-wide">Tambah Subadmin Baru</h1>
             </div>
 
-            {{-- Form Tambah Subadmin --}}
+            @if ($errors->any() && old('name'))
+                <div class="error-list">
+                    <div class="flex items-center mb-3">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <strong>Terjadi kesalahan:</strong>
+                    </div>
+                    <ul class="ml-6 space-y-1 list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form method="POST" action="{{ route('subadmin.store') }}" class="space-y-6">
                 @csrf
 
@@ -276,6 +328,9 @@
                     <input type="text" name="name" value="{{ old('name') }}"
                         class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300"
                         placeholder="Masukkan nama lengkap" required>
+                    @error('name')
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div>
@@ -285,6 +340,9 @@
                     <input type="text" name="telepon" value="{{ old('telepon') }}"
                         class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300"
                         placeholder="Contoh: 081234567890" required>
+                    @error('telepon')
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div>
@@ -294,6 +352,9 @@
                     <input type="password" name="password"
                         class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300"
                         placeholder="Minimal 8 karakter" required>
+                    @error('password')
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div>
@@ -321,11 +382,14 @@
                         <option value="operator" {{ old('level') == 'operator' ? 'selected' : '' }}>👨‍💼 Operator
                         </option>
                     </select>
+                    @error('level')
+                        <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="flex justify-end gap-3 mt-6">
                     <button type="submit"
-                        class="flex justify-center items-center gap-2 bg-gradient-to-r from-blue-400 to-blue-500 hover:from-blue-500 hover:to-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition-all duration-200">
+                        class="flex justify-center items-center gap-2 btn-gradient text-white px-4 py-2 rounded-lg shadow-md transition-all duration-200">
                         <i class="fa-solid fa-floppy-disk"></i> Simpan
                     </button>
 
@@ -339,9 +403,6 @@
     </div>
 
 
-
-
-    {{-- Modal Delete tetap --}}
     <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white rounded-2xl p-6 max-w-md mx-4">
             <div class="text-center">
@@ -365,35 +426,31 @@
     </div>
 
     <script>
-        function openAddSubadminModal() {
-            document.getElementById('createModal').classList.remove('hidden');
-        }
-
-        function closeAddSubadminModal() {
-            document.getElementById('createModal').classList.add('hidden');
-        }
-    </script>
-
-
-    <script>
         let deleteUserId = null;
-        const addSubadminModal = document.getElementById('addSubadminModal');
-        const openAddSubadminBtn = document.getElementById('openAddSubadminModal');
+        const createModal = document.getElementById('createModal'); // Ambil modal
 
-        // ******************** FUNGSI POPUP TAMBAH SUBADMIN ********************
+        // Fungsi untuk membuka modal Tambah Subadmin
+        function openAddSubadminModal() {
+            createModal.classList.remove('hidden');
+        }
 
+        // Fungsi untuk menutup modal Tambah Subadmin
+        function closeAddSubadminModal() {
+            createModal.classList.add('hidden');
+        }
 
+        // *** FUNGSI UTAMA: TAMPILKAN MODAL JIKA ADA ERROR VALIDASI ***
+        // Jika ada error ($errors->any()) DAN ada data input lama (old('name')) dari form ini, modal akan otomatis muncul.
+        @if ($errors->any() && old('name'))
+            document.addEventListener('DOMContentLoaded', function() {
+                openAddSubadminModal();
+            });
+        @endif
+        // -----------------------------------------------------------------
 
-        // Search functionality
-        document.getElementById('searchUser').addEventListener('keyup', function() {
-            const searchTerm = this.value.toLowerCase();
-            filterTable();
-        });
-
-        // Filter functionality
-        document.getElementById('filterLevel').addEventListener('change', function() {
-            filterTable();
-        });
+        // FUNGSI SEARCH & FILTER
+        document.getElementById('searchUser').addEventListener('keyup', filterTable);
+        document.getElementById('filterLevel').addEventListener('change', filterTable);
 
         function filterTable() {
             const searchTerm = document.getElementById('searchUser').value.toLowerCase();
@@ -401,8 +458,12 @@
             const rows = document.querySelectorAll('#userTableBody tr');
 
             rows.forEach(row => {
-                const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                const phone = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                // Selector untuk Nama (di dalam span di td:nth-child(2)) dan Telepon (td:nth-child(3))
+                const nameElement = row.querySelector('td:nth-child(2) span');
+                const phoneElement = row.querySelector('td:nth-child(3)');
+
+                const name = nameElement ? nameElement.textContent.toLowerCase() : '';
+                const phone = phoneElement ? phoneElement.textContent.toLowerCase() : '';
                 const level = row.getAttribute('data-level');
 
                 const matchesSearch = name.includes(searchTerm) || phone.includes(searchTerm);
@@ -416,8 +477,7 @@
             });
         }
 
-        // ******************** FUNGSI DELETE MODAL ********************
-
+        // FUNGSI DELETE MODAL
         function confirmDelete(userName, userId) {
             deleteUserId = userId;
             document.getElementById('deleteUserName').textContent = userName;
@@ -434,7 +494,7 @@
                 // Buat form untuk delete
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = '/admin/delete/' + deleteUserId; // sesuaikan route
+                form.action = '/admin/delete/' + deleteUserId; // **PASTIKAN ROUTE INI BENAR**
 
                 // CSRF token
                 const csrfToken = document.createElement('input');

@@ -47,7 +47,7 @@
                 <!-- Tombol Tambah -->
                 <div class="mb-6 flex gap-3">
                     <a href="{{ route('voucher.create') }}" class="flex items-center gap-2 bg-emerald-500 text-white px-4 py-2 rounded-md font-medium shadow-md hover:bg-emerald-600 transition duration-500">
-                        <i class="fa-solid fa-circle-plus"></i> Tambah Reseller
+                        <i class="fa-solid fa-circle-plus"></i> Tambah Profile
                     </a>
                 </div>
 
