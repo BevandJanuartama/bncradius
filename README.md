@@ -1,61 +1,216 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌐 Borneo Network Center (BNC)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+<div align="center">
 
-## About Laravel
+**Modern Network Administration Solution Built on Laravel 12**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+[![Laravel](https://img.shields.io/badge/Laravel-12.21.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+</div>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📋 Overview
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Borneo Network Center (BNC)** is a comprehensive internal administration application designed to streamline customer data management, subscription services, and back-office operations. Built with the power of Laravel 12 and featuring a modern interface powered by Tailwind CSS.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+The application follows Laravel's standard **Model-View-Controller (MVC)** architecture pattern, ensuring scalability and maintainable code structure.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🚀 Tech Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+| Category | Technology | Version | Description |
+|----------|-----------|---------|-------------|
+| **Backend Framework** | Laravel | `12.21.0` | Leading PHP framework for web artisans |
+| **Database** | MySQL | Latest | Robust relational database system |
+| **Frontend Styling** | Tailwind CSS | `3.x` | Utility-first CSS framework |
+| **Authentication** | Laravel Breeze | Latest | Official Laravel authentication scaffolding |
+| **Package Management** | Composer & NPM | Latest | PHP and JavaScript dependency managers |
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 🖥️ System Requirements
 
-## Contributing
+Before installation, ensure your system meets Laravel's minimum server requirements:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **PHP** >= 8.2
+- **Composer** >= 2.0
+- **Node.js** >= 18.x & NPM >= 9.x
+- **MySQL** >= 5.7 
 
-## Code of Conduct
+📚 **Reference:** [Laravel Server Requirements](https://laravel.com/docs/12.x/deployment#server-requirements)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## ⚡ Quick Start Guide
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Follow these steps to get BNC up and running on your local machine.
 
-## License
+### 1️⃣ Clone & Install Dependencies
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+# Clone the repository
+git clone https://github.com/BevandJanuartama/bncradius.git your-project-name
+
+# Navigate to project directory
+cd your-project-name
+
+# Install PHP dependencies
+composer install
+
+# Install Node.js dependencies
+npm install
+```
+
+### 2️⃣ Environment Configuration
+
+```bash
+# Copy environment file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+```
+
+**⚙️ Configure your `.env` file:**
+
+```env
+APP_NAME="Borneo Network Center"
+APP_URL=http://localhost:8000
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+
+### 3️⃣ Database Setup
+
+```bash
+# Run database migrations
+php artisan migrate
+
+# Seed initial data
+php artisan db:seed
+```
+
+### 4️⃣ Frontend Assets & Storage
+
+```bash
+# Compile frontend assets (development)
+npm run dev
+
+# For production build
+# npm run build
+
+# Create storage symbolic link
+php artisan storage:link
+```
+
+### 5️⃣ Launch Application
+
+```bash
+# Start the development server
+php artisan serve
+```
+
+🎉 **Access your application at:** [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 👥 Default User Accounts
+
+After seeding, the following test accounts are available:
+
+| Phone (Username) | Name | Password | Role |
+|-----------------|------|----------|------|
+| `0801` | user | `user` | user |
+| `0802` | admin | `admin` | admin |
+| `0803` | administrator | `administrator` | administrator |
+| `0804` | teknisi | `teknisi` | teknisi |
+| `0805` | keuangan | `keuangan` | keuangan |
+| `0806` | operator | `operator` | operator |
+
+
+> ⚠️ **Security Note:** Change these default credentials immediately in production environments!
+
+---
+
+## 🛠️ Additional Commands
+
+### Fresh Installation
+
+Reset and reinstall the entire database:
+
+```bash
+# Drop all tables, re-migrate, and seed
+php artisan migrate:fresh --seed
+```
+
+### Cache Management
+
+```bash
+# Clear application cache
+php artisan cache:clear
+
+# Clear configuration cache
+php artisan config:clear
+
+# Clear route cache
+php artisan route:clear
+
+# Clear view cache
+php artisan view:clear
+```
+
+### Optimization (Production)
+
+```bash
+# Cache configuration
+php artisan config:cache
+
+# Cache routes
+php artisan route:cache
+
+# Cache views
+php artisan view:cache
+```
+
+---
+
+## 👨‍💻 Developer
+
+** Muhammad Bevand Januartama**
+- 💼 Software Engineer (Rekayasa Perangkat Lunak)
+- 🏫 SMK Telkom Banjarbaru, Indonesia
+- 🔗 GitHub: [@BevandJanuartama](https://github.com/BevandJanuartama)
+
+---
+
+## 📄 License
+
+This project is proprietary software. All rights reserved.
+
+---
+
+## 📞 Support
+
+If you encounter any issues or have questions, please:
+- Open an issue on [GitHub Issues](https://github.com/BevandJanuartama/bncradius/issues)
+- Contact the developer directly
+
+---
+
+<div align="center">
+
+**Made with ❤️ in Banjarbaru, Indonesia**
+
+⭐ **Star this repository if you find it helpful!**
+
+</div>
