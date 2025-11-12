@@ -40,7 +40,7 @@ Before installation, ensure your system meets Laravel's minimum server requireme
 - **PHP** >= 8.2
 - **Composer** >= 2.0
 - **Node.js** >= 18.x & NPM >= 9.x
-- **MySQL** >= 5.7 or **MariaDB** >= 10.3
+- **MySQL** >= 5.7 
 
 📚 **Reference:** [Laravel Server Requirements](https://laravel.com/docs/12.x/deployment#server-requirements)
 
@@ -130,12 +130,13 @@ After seeding, the following test accounts are available:
 
 | Phone (Username) | Name | Password | Role |
 |-----------------|------|----------|------|
-| `0803` | administrator | `administrator` | Administrator |
-| `0802` | admin | `admin` | Admin |
-| `0804` | teknisi | `teknisi` | Technician |
-| `0805` | keuangan | `keuangan` | Finance |
-| `0806` | operator | `operator` | Operator |
-| `0801` | user | `user` | User |
+| `0801` | user | `user` | user |
+| `0802` | admin | `admin` | admin |
+| `0803` | administrator | `administrator` | administrator |
+| `0804` | teknisi | `teknisi` | teknisi |
+| `0805` | keuangan | `keuangan` | keuangan |
+| `0806` | operator | `operator` | operator |
+
 
 > ⚠️ **Security Note:** Change these default credentials immediately in production environments!
 
