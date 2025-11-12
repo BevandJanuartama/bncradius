@@ -17,6 +17,7 @@ use App\Http\Controllers\RouterController;
 use App\Http\Controllers\StokVoucherController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InvoiceController;
 use App\Models\Info;
 use Illuminate\Http\Request;
 use App\Models\Subscription;
@@ -68,10 +69,6 @@ Route::middleware(['auth', '\App\Http\Middleware\CheckLevel:user'])->group(funct
     Route::get('/subscriptions/user/json', [SubscriptionController::class, 'userSubscriptionsJson'])
         ->middleware('auth')
         ->name('subscription.user.json');
-
-
-
-
 
     // Profil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

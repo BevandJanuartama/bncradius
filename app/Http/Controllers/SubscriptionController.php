@@ -117,15 +117,22 @@ class SubscriptionController extends Controller
         $data = $subs->map(function($sub) {
             return [
                 'id' => $sub->id,
-                'nama_perusahaan' => $sub->nama_perusahaan,
-                'data_center' => $sub->data_center,
-                'subdomain_url' => $sub->subdomain_url,
-                'siklus' => $sub->siklus,
-                'harga' => $sub->harga,
-                'status' => $sub->status,
-                'nama_paket' => $sub->paket?->nama,
-                'invoice' => $sub->invoice ? ['file_path' => $sub->invoice->file_path] : null,
-                'created_at' => $sub->created_at,
+                'nama_perusahaan'   => $sub->nama_perusahaan,
+                'nama_pelanggan'    => $sub->user?->name,
+                'telepon'           => $sub->telepon,
+                'nama_paket'        => $sub->paket?->nama,
+                'siklus'            => ucfirst($sub->siklus),
+                'subdomain_url'     => $sub->subdomain_url,
+                'harga'             => $sub->harga,
+                'data_center'       => $sub->data_center,
+                'alamat'            => $sub->alamat,
+                'provinsi'          => $sub->provinsi,
+                'kabupaten'         => $sub->kabupaten,
+                'tanggal_transaksi' => $sub->created_at->format('Y-m-d'),
+                'status'            => $sub->status,
+                'invoice'           => $sub->invoice ? ['file_path' => $sub->invoice->file_path] : null,
+                'created_at'        => $sub->created_at,
+                'updated_at'        => $sub->updated_at,
             ];
         });
 

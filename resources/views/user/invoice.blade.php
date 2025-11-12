@@ -64,6 +64,42 @@
         </div>
     </main>
 
+    <!-- Modal Pembayaran -->
+    <div id="paymentModal"
+        class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 transition-all duration-300 ease-out">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 w-[90%] max-w-md text-center transform scale-95 opacity-0 transition-all duration-300"
+            id="paymentBox">
+            <h3 class="text-xl font-bold text-blue-600 mb-4">Panduan Pembayaran</h3>
+            <p class="text-gray-700 mb-3">Silakan transfer ke rekening berikut:</p>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-xl py-3 mb-4">
+                <p class="text-sm text-gray-800 leading-relaxed">
+                    💳 <strong>BCA 123456789</strong><br>
+                    a.n. <strong>PT Borneo Network Center</strong>
+                </p>
+            </div>
+
+            <p class="text-gray-700 mb-3">Setelah transfer, kirim bukti pembayaran ke WhatsApp:</p>
+
+            <a href="https://wa.me/6281528297789"
+            target="_blank"
+            class="inline-flex items-center justify-center bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold px-5 py-2.5 rounded-full shadow-md hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 transition-all duration-300 mb-4">
+                <i class="fab fa-whatsapp mr-2 text-lg"></i>Kirim Bukti Pembayaran
+            </a>
+
+            <p class="text-sm text-gray-500 mb-4">
+                Setelah bukti dikirim, tunggu admin mengonfirmasi pembayaranmu.
+            </p>
+
+            <button id="closeModal"
+                class="bg-gray-200 text-gray-700 px-4 py-2 rounded-full hover:bg-gray-300 hover:scale-105 transition-all duration-200">
+                Tutup
+            </button>
+        </div>
+    </div>
+
+
+
     <script>
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -110,15 +146,19 @@ document.addEventListener('DOMContentLoaded', function () {
                         </span>
                     </td>
                     <td class="px-6 py-4 text-center">
-                        ${
-                            sub.invoice?.file_path
-                                ? `<a href="/storage/${sub.invoice.file_path}" target="_blank"
-                                    class="bg-indigo-600 text-white px-3 py-1 text-xs rounded-full hover:bg-indigo-700">
-                                    <i class="fas fa-download mr-1"></i>Download
-                                   </a>`
-                                : '<span class="text-gray-400 italic text-xs">Belum tersedia</span>'
-                        }
-                    </td>
+    ${
+        sub.invoice?.file_path
+            ? `<a href="/storage/${sub.invoice.file_path}" target="_blank"
+                class="inline-flex items-center bg-indigo-600 text-white px-3 py-1 text-xs rounded-full shadow-sm hover:bg-indigo-700 hover:shadow-md transition-all duration-200">
+                <i class="fas fa-download mr-1"></i>Download
+              </a>`
+            : `<button onclick="openPaymentModal()"
+                class="inline-flex items-center bg-blue-500 text-white px-3 py-1 text-xs rounded-full shadow-sm hover:bg-blue-600 hover:shadow-md transform hover:scale-105 transition-all duration-200">
+                </i>Petunjuk pembayaran
+              </button>`
+    }
+</td>
+
                 `;
                 tbody.appendChild(tr);
             });
@@ -148,6 +188,41 @@ document.addEventListener('DOMContentLoaded', function () {
             $('#tableContainer').removeClass('hidden');
         });
 });
+
+// Modal handler
+function openPaymentModal() {
+    document.getElementById('paymentModal').classList.remove('hidden');
+    document.getElementById('paymentModal').classList.add('flex');
+}
+
+document.getElementById('closeModal').addEventListener('click', () => {
+    const modal = document.getElementById('paymentModal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+});
+
+function openPaymentModal() {
+    const modal = document.getElementById('paymentModal');
+    const box = document.getElementById('paymentBox');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    setTimeout(() => {
+        box.classList.remove('scale-95', 'opacity-0');
+        box.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+document.getElementById('closeModal').addEventListener('click', () => {
+    const modal = document.getElementById('paymentModal');
+    const box = document.getElementById('paymentBox');
+    box.classList.add('scale-95', 'opacity-0');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }, 200);
+});
+
+
 
     </script>
 
