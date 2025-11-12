@@ -1,215 +1,215 @@
-🌐 Borneo Network Center (BNC)
+# 🌐 Borneo Network Center (BNC)
 
-Solusi Administrasi Jaringan Modern Berbasis Laravel 12
+<div align="center">
 
-Borneo Network Center (BNC) adalah sebuah aplikasi administrasi internal yang dibangun untuk mempermudah pengelolaan data pelanggan, manajemen langganan layanan, dan sistem administrasi back-office lainnya. Dibangun dengan kekuatan Laravel 12 dan antarmuka yang modern menggunakan Tailwind CSS.
+**Modern Network Administration Solution Built on Laravel 12**
 
-🚀 Teknologi Utama (Tech Stack)
+[![Laravel](https://img.shields.io/badge/Laravel-12.21.0-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
+[![PHP](https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
 
-Aplikasi ini mengadopsi arsitektur Model-View-Controller (MVC) standar Laravel untuk skalabilitas dan pemeliharaan kode yang lebih baik.
+</div>
 
-Kategori
+---
 
-Teknologi
+## 📋 Overview
 
-Versi
+**Borneo Network Center (BNC)** is a comprehensive internal administration application designed to streamline customer data management, subscription services, and back-office operations. Built with the power of Laravel 12 and featuring a modern interface powered by Tailwind CSS.
 
-Catatan
+The application follows Laravel's standard **Model-View-Controller (MVC)** architecture pattern, ensuring scalability and maintainable code structure.
 
-Backend
+---
 
-Laravel Framework
+## 🚀 Tech Stack
 
-12.21.0
+| Category | Technology | Version | Description |
+|----------|-----------|---------|-------------|
+| **Backend Framework** | Laravel | `12.21.0` | Leading PHP framework for web artisans |
+| **Database** | MySQL | Latest | Robust relational database system |
+| **Frontend Styling** | Tailwind CSS | `3.x` | Utility-first CSS framework |
+| **Authentication** | Laravel Breeze | Latest | Official Laravel authentication scaffolding |
+| **Package Management** | Composer & NPM | Latest | PHP and JavaScript dependency managers |
 
-Framework PHP terkemuka.
+---
 
-Database
+## 🖥️ System Requirements
 
-MySQL
+Before installation, ensure your system meets Laravel's minimum server requirements:
 
--
+- **PHP** >= 8.2
+- **Composer** >= 2.0
+- **Node.js** >= 18.x & NPM >= 9.x
+- **MySQL** >= 5.7 or **MariaDB** >= 10.3
 
-Database relasional yang solid.
+📚 **Reference:** [Laravel Server Requirements](https://laravel.com/docs/12.x/deployment#server-requirements)
 
-Frontend
+---
 
-Tailwind CSS & JS
+## ⚡ Quick Start Guide
 
--
+Follow these steps to get BNC up and running on your local machine.
 
-Desain utility-first yang cepat dan responsif.
+### 1️⃣ Clone & Install Dependencies
 
-Otentikasi
+```bash
+# Clone the repository
+git clone https://github.com/BevandJanuartama/bncradius.git your-project-name
 
-Laravel Breeze
+# Navigate to project directory
+cd your-project-name
 
--
-
-Starter kit otentikasi resmi Laravel.
-
-Package Mgt.
-
-Composer & NPM
-
--
-
-Untuk dependensi PHP dan Frontend.
-
-🛠️ Persyaratan Sistem
-
-Pastikan Anda telah memenuhi persyaratan server minimum yang direkomendasikan untuk menjalankan Laravel.
-
-Lihat: Persyaratan Server Laravel
-
-⬇️ Langkah Instalasi
-
-Ikuti langkah-langkah berikut untuk menjalankan proyek BNC di lingkungan lokal Anda.
-
-1. Kloning Repositori & Instalasi
-
-Buka Terminal/CMD Anda dan jalankan perintah berikut:
-
-# Kloning repositori proyek
-git clone [https://github.com/BevandJanuartama/bncradius.git](https://github.com/BevandJanuartama/bncradius.git) YourDirectoryName
-
-# Masuk ke direktori proyek
-cd YourDirectoryName
-
-# Instal dependensi PHP dengan Composer
+# Install PHP dependencies
 composer install
 
-# Instal dependensi Frontend (Node.js/NPM)
+# Install Node.js dependencies
 npm install
+```
 
+### 2️⃣ Environment Configuration
 
-2. Konfigurasi Lingkungan (.env)
-
-Salin file contoh konfigurasi dan buat kunci aplikasi:
-
-# Salin file .env.example menjadi .env
+```bash
+# Copy environment file
 cp .env.example .env
 
-# Generate kunci aplikasi Laravel yang unik
+# Generate application key
 php artisan key:generate
+```
 
+**⚙️ Configure your `.env` file:**
 
-⚠️ Penting: Buka file .env yang baru dibuat dan sesuaikan detail koneksi database Anda:
-
+```env
+APP_NAME="Borneo Network Center"
 APP_URL=http://localhost:8000
-DB_DATABASE=(-database anda-)
-DB_USERNAME=root
-DB_PASSWORD=
 
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-3. Setup Database
+### 3️⃣ Database Setup
 
-Jalankan migrasi untuk membuat tabel-tabel database, diikuti dengan seeder untuk mengisi data awal:
-
-# Jalankan Migrasi Database
+```bash
+# Run database migrations
 php artisan migrate
 
-# Jalankan Seeder Database (membuat pengguna awal)
+# Seed initial data
 php artisan db:seed
+```
 
+### 4️⃣ Frontend Assets & Storage
 
-Akun Pengguna Awal
-
-Proses seeder akan otomatis membuat akun default dengan berbagai level. Gunakan akun berikut untuk login pertama kali:
-
-Telepon (Username)
-
-Nama
-
-Password
-
-Level
-
-0803
-
-administrator
-
-administrator
-
-administrator
-
-0802
-
-admin
-
-admin
-
-admin
-
-0804
-
-teknisi
-
-teknisi
-
-teknisi
-
-0805
-
-keuangan
-
-keuangan
-
-keuangan
-
-0806
-
-operator
-
-operator
-
-operator
-
-0801
-
-user
-
-user
-
-user
-
-4. Kompilasi Frontend & Storage Link
-
-Kompilasi aset Tailwind CSS dan buat tautan simbolis untuk penyimpanan berkas (file):
-
-# Kompilasi aset frontend untuk pengembangan (development)
+```bash
+# Compile frontend assets (development)
 npm run dev
 
-# Jika untuk produksi (production)
+# For production build
 # npm run build
 
-# Buat symbolic link untuk folder storage/app/public
+# Create storage symbolic link
 php artisan storage:link
+```
 
+### 5️⃣ Launch Application
 
-5. Jalankan Aplikasi
-
-Jalankan server bawaan Laravel:
-
+```bash
+# Start the development server
 php artisan serve
+```
 
+🎉 **Access your application at:** [http://localhost:8000](http://localhost:8000)
 
-Akses aplikasi di browser Anda: http://localhost:8000
+---
 
-🧹 Perintah Tambahan (Opsional)
+## 👥 Default User Accounts
 
-Jika Anda perlu membersihkan database dan mengulang instalasi dari awal, gunakan perintah reset berikut:
+After seeding, the following test accounts are available:
 
-# Hapus semua tabel, migrasi ulang, dan jalankan seeder
+| Phone (Username) | Name | Password | Role |
+|-----------------|------|----------|------|
+| `0803` | administrator | `administrator` | Administrator |
+| `0802` | admin | `admin` | Admin |
+| `0804` | teknisi | `teknisi` | Technician |
+| `0805` | keuangan | `keuangan` | Finance |
+| `0806` | operator | `operator` | Operator |
+| `0801` | user | `user` | User |
+
+> ⚠️ **Security Note:** Change these default credentials immediately in production environments!
+
+---
+
+## 🛠️ Additional Commands
+
+### Fresh Installation
+
+Reset and reinstall the entire database:
+
+```bash
+# Drop all tables, re-migrate, and seed
 php artisan migrate:fresh --seed
+```
 
+### Cache Management
 
-👨‍💻 Kontributor
+```bash
+# Clear application cache
+php artisan cache:clear
 
-Proyek ini dikembangkan oleh:
+# Clear configuration cache
+php artisan config:clear
 
-Bevand Januartama
+# Clear route cache
+php artisan route:clear
 
-Software Engineer (Rekayasa Perangkat Lunak)
+# Clear view cache
+php artisan view:clear
+```
 
-SMK Telkom Banjarbaru, Indonesia
+### Optimization (Production)
+
+```bash
+# Cache configuration
+php artisan config:cache
+
+# Cache routes
+php artisan route:cache
+
+# Cache views
+php artisan view:cache
+```
+
+---
+
+## 👨‍💻 Developer
+
+** Muhammad Bevand Januartama**
+- 💼 Software Engineer (Rekayasa Perangkat Lunak)
+- 🏫 SMK Telkom Banjarbaru, Indonesia
+- 🔗 GitHub: [@BevandJanuartama](https://github.com/BevandJanuartama)
+
+---
+
+## 📄 License
+
+This project is proprietary software. All rights reserved.
+
+---
+
+## 📞 Support
+
+If you encounter any issues or have questions, please:
+- Open an issue on [GitHub Issues](https://github.com/BevandJanuartama/bncradius/issues)
+- Contact the developer directly
+
+---
+
+<div align="center">
+
+**Made with ❤️ in Banjarbaru, Indonesia**
+
+⭐ **Star this repository if you find it helpful!**
+
+</div>
