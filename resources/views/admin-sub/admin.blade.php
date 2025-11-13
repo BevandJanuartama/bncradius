@@ -162,10 +162,10 @@
                             <select id="filterLevel"
                                 class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600">
                                 <option value="">Semua Level</option>
-                                <option value="administrator">👑 Administrator</option>
-                                <option value="keuangan">💰 Keuangan</option>
-                                <option value="teknisi">🔧 Teknisi</option>
-                                <option value="operator">👨‍💼 Operator</option>
+                                <option value="administrator"> Administrator</option>
+                                <option value="keuangan"> Keuangan</option>
+                                <option value="teknisi"> Teknisi</option>
+                                <option value="operator"> Operator</option>
                             </select>
                         </div>
                     </div>
@@ -225,27 +225,27 @@
                                         @if ($user->level == 'administrator')
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                👑 Administrator
+                                                 Administrator
                                             </span>
                                         @elseif($user->level == 'keuangan')
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                💰 Keuangan
+                                                 Keuangan
                                             </span>
                                         @elseif($user->level == 'teknisi')
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                🔧 Teknisi
+                                                 Teknisi
                                             </span>
                                         @elseif($user->level == 'operator')
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                👨‍💼 Operator
+                                                 Operator
                                             </span>
                                         @else
                                             <span
                                                 class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                👤 User
+                                                 User
                                             </span>
                                         @endif
                                     </td>
@@ -374,12 +374,12 @@
                         class="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 transition-all duration-300 appearance-none pr-8"
                         required>
                         <option value="">-- Pilih Level Akses --</option>
-                        <option value="administrator" {{ old('level') == 'administrator' ? 'selected' : '' }}>👑
+                        <option value="administrator" {{ old('level') == 'administrator' ? 'selected' : '' }}>
                             Administrator</option>
-                        <option value="keuangan" {{ old('level') == 'keuangan' ? 'selected' : '' }}>💰 Keuangan
+                        <option value="keuangan" {{ old('level') == 'keuangan' ? 'selected' : '' }}> Keuangan
                         </option>
-                        <option value="teknisi" {{ old('level') == 'teknisi' ? 'selected' : '' }}>🔧 Teknisi</option>
-                        <option value="operator" {{ old('level') == 'operator' ? 'selected' : '' }}>👨‍💼 Operator
+                        <option value="teknisi" {{ old('level') == 'teknisi' ? 'selected' : '' }}> Teknisi</option>
+                        <option value="operator" {{ old('level') == 'operator' ? 'selected' : '' }}> Operator
                         </option>
                     </select>
                     @error('level')

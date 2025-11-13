@@ -156,8 +156,9 @@
                                         </button>
                                     @else
                                         <button
+                                            id="statusButton"
                                             class="px-3 py-1 text-xs font-semibold text-red-700 bg-red-100 border border-red-200 rounded-full hover:bg-red-200 transition"
-                                            onclick="alert('SNMP Disconnected: {{ $router->nama_router }}')">
+                                            onclick="toggleStatus(this, '{{ $router->nama_router }}')">
                                             Disconnected
                                         </button>
                                     @endif
@@ -239,6 +240,22 @@
 
         function closeModal() {
             document.getElementById('createModal').classList.add('hidden');
+        }
+
+        function toggleStatus(button, routerName) {
+            const isDisconnected = button.textContent.trim() === 'Disconnected';
+            
+            if (isDisconnected) {
+                // Ubah ke Connected (hijau)
+                button.textContent = 'Connected';
+                button.className = 'px-3 py-1 text-xs font-semibold text-green-700 bg-green-100 border border-green-200 rounded-full hover:bg-green-200 transition';
+                alert('SNMP Connected: ' + routerName);
+            } else {
+                // Ubah ke Disconnected (merah)
+                button.textContent = 'Disconnected';
+                button.className = 'px-3 py-1 text-xs font-semibold text-red-700 bg-red-100 border border-red-200 rounded-full hover:bg-red-200 transition';
+                alert('SNMP Disconnected: ' + routerName);
+            }
         }
     </script>
 

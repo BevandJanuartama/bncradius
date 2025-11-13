@@ -10,46 +10,63 @@ use Illuminate\Support\Facades\Auth;
 
 class RouterController extends Controller
 {
+    // Menampilkan semua router yang tersimpan di database
     public function index()
     {
+        // Ambil semua data router dari tabel routers
         $routers = Router::all();
+
+        // Kirim data router ke view index
         return view('admin-sub.routers.index', compact('routers'));
     }
 
+    // Menampilkan halaman form untuk menambahkan router baru
     public function create()
     {
+        // Kembali ke view form create router
         return view('admin-sub.routers.create');
     }
 
+    // Menyimpan data router baru ke database
     public function store(Request $request)
     {
+        // Validasi input pengguna sebelum disimpan
         $request->validate([
-            'nama_router' => 'required|string|max:255',
-            'tipe_koneksi' => 'required|in:ip_public,vpn_radius',
-            'ip_address' => 'nullable|ip'
+            'nama_router' => 'required|string|max:255', // nama router wajib diisi
+            'tipe_koneksi' => 'required|in:ip_public,vpn_radius', // hanya dua pilihan koneksi
+            'ip_address' => 'nullable|ip' // jika diisi harus format IP valid
         ]);
 
+        // Simpan data router baru ke database
         Router::create([
-            'nama_router' => $request->nama_router,
-            'tipe_koneksi' => $request->tipe_koneksi,
+            'nama_router' => $request->nama_router, // nama router dari input
+            'tipe_koneksi' => $request->tipe_koneksi, // tipe koneksi (ip_public/vpn_radius)
+            // jika tipe koneksi ip_public → pakai input user
+            // jika vpn_radius → generate IP random 172.31.x.x
             'ip_address' => $request->tipe_koneksi === 'ip_public'
                 ? $request->ip_address
-                : '172.31.' . rand(0, 255) . '.' . rand(1, 254), // IP default random jika VPN RADIUS
-            'secret' => Str::random(16),
+                : '172.31.' . rand(0, 255) . '.' . rand(1, 254),
+            'secret' => Str::random(16), // generate secret acak 16 karakter
         ]);
 
+        // Redirect ke halaman daftar router dengan pesan sukses
         return redirect()->route('routers.index')->with('success', 'Router berhasil ditambahkan.');
     }
 
+    // Mengunduh script konfigurasi Mikrotik berdasarkan router tertentu
     public function downloadScript($id)
     {
+        // Ambil router berdasarkan ID, jika tidak ditemukan akan error 404
         $router = Router::findOrFail($id);
 
-        // ambil nama user & router
+        // Ambil nama user yang sedang login
         $clientName = Auth::user()->name;
+
+        // Ambil nama router dari database
         $routerName = $router->nama_router;
 
-        // template script dengan inject variabel
+        // Template script Mikrotik, berisi konfigurasi lengkap
+        // Menggunakan heredoc syntax agar lebih mudah menulis multi-line string
         $script = <<<EOT
     # ============================================================
     # Konfigurasi BNC Radius Mikrotik
@@ -159,11 +176,12 @@ class RouterController extends Controller
     }"
     EOT;
 
-        // kasih nama file sesuai router
+        // Menentukan nama file hasil download, berdasarkan ID router
         $filename = "bnc-radius-{$router->id}.rsc";
 
+        // Mengirim file script ke browser agar langsung terunduh
         return response($script)
-            ->header('Content-Type', 'text/plain')
-            ->header('Content-Disposition', "attachment; filename={$filename}");
+            ->header('Content-Type', 'text/plain') // jenis file teks
+            ->header('Content-Disposition', "attachment; filename={$filename}"); // paksa unduh dengan nama file
     }
 }

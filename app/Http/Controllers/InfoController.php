@@ -12,6 +12,8 @@ class InfoController extends Controller
      */
     public function index()
     {
+        // Ambil semua data info dari database, urutkan berdasarkan tanggal kejadian terbaru (desc)
+        // dan tampilkan ke view 'admin-sub.info' dengan pagination 10 data per halaman
         $infos = Info::orderBy('tanggal_kejadian', 'desc')->paginate(10);
         return view('admin-sub.info', compact('infos'));
     }
@@ -22,7 +24,7 @@ class InfoController extends Controller
      */
     public function create()
     {
-        //
+        // Tidak digunakan karena form create mungkin tidak dipakai di sistem ini
     }
 
     /**
@@ -30,7 +32,7 @@ class InfoController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi input
+        // Validasi input dari form
         $request->validate([
             'nama' => 'required|string|max:255',
             'telepon' => 'nullable|string|max:20',
@@ -39,16 +41,17 @@ class InfoController extends Controller
             'level' => 'required|string',
         ]);
 
-        // Simpan log
+        // Simpan data log ke tabel info
         Info::create([
-            'nama_lengkap'    => $request->nama,
-            'no_telepon'      => $request->telepon,       // optional, kalau kolom ada
-            'ip_address'      => $request->ip() ?? $request->ip_address,
-            'info_aktifitas'  => $request->info_aktifitas,
-            'tanggal_kejadian'=> $request->tanggal_kejadian,
-            'level'           => $request->level,
+            'nama_lengkap'    => $request->nama,                    // nama pelapor
+            'no_telepon'      => $request->telepon,                 // nomor telepon opsional
+            'ip_address'      => $request->ip() ?? $request->ip_address, // ambil IP client otomatis
+            'info_aktifitas'  => $request->info_aktifitas,          // isi aktivitas/log
+            'tanggal_kejadian'=> $request->tanggal_kejadian,        // tanggal kejadian
+            'level'           => $request->level,                   // level user/admin
         ]);
 
+        // Kembali ke halaman index info dengan pesan sukses
         return redirect()->route('info.index')->with('success', 'Log berhasil disimpan');
     }
 
@@ -58,7 +61,7 @@ class InfoController extends Controller
      */
     public function show(Info $info)
     {
-        //
+        // Belum digunakan
     }
 
     /**
@@ -66,7 +69,7 @@ class InfoController extends Controller
      */
     public function edit(Info $info)
     {
-        //
+        // Belum digunakan
     }
 
     /**
@@ -74,7 +77,7 @@ class InfoController extends Controller
      */
     public function update(Request $request, Info $info)
     {
-        //
+        // Belum digunakan
     }
 
     /**
@@ -82,9 +85,10 @@ class InfoController extends Controller
      */
     public function destroyAll()
     {
-        // Hapus semua log dan reset auto-increment
+        // Hapus semua data log pada tabel info dan reset auto-increment ke 0
         \App\Models\Info::truncate();
 
+        // Redirect kembali ke halaman index dengan pesan sukses
         return redirect()->route('info.index')
                         ->with('success', 'Semua log berhasil dihapus');
     }

@@ -138,8 +138,8 @@
 
                         <!-- Email -->
                         <div>
-                            <label class="block text-gray-700 font-semibold mb-2">Email</label>
-                            <input type="email" name="email" value="{{ Auth::user()->telepon }}"
+                            <label class="block text-gray-700 font-semibold mb-2">Telepon</label>
+                            <input type="telepon" name="telepon" value="{{ Auth::user()->telepon }}"
                                 class="form-input w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#3B82F6]">
                         </div>
 

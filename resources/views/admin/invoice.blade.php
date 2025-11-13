@@ -5,31 +5,35 @@
     <meta charset="UTF-8">
     <title>Lembar Invoice</title>
     <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #333;
-            margin: 40px;
-            background-color: #f7f9fc;
+            background-color: #fff;
         }
-        /* Kop surat */
+
+        /* Kop surat biru full (tanpa putih di atas & bawah) */
         .kop-surat {
             text-align: center;
-            padding: 20px;
             background-color: #549BE7;
             color: #fff;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-        .kop-surat img {
-            width: 80px;
-            margin-bottom: 10px;
+            width: 100%;
+            padding: 25px 0;
+            margin: 0;
         }
         .kop-surat h1 {
-            margin: 5px 0;
+            margin: 0;
             font-size: 28px;
+            letter-spacing: 1px;
         }
         .kop-surat h2 {
-            margin: 5px 0;
+            margin: 3px 0;
             font-size: 18px;
             font-weight: normal;
         }
@@ -38,54 +42,84 @@
             font-size: 12px;
         }
 
+        /* Kontainer isi */
+        .content {
+            margin: 30px 40px;
+        }
+
         /* Judul Invoice */
         .invoice-title {
             text-align: center;
-            margin: 20px 0;
             font-size: 26px;
             font-weight: bold;
             color: #2667FF;
+            margin-bottom: 8px;
         }
 
-        /* Info Pelanggan */
-        .invoice-info, .billing-info {
-            width: 100%;
+        /* Nomor & Tanggal sejajar kiri-kanan di bawah judul */
+        .nomor-surat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* sejajarkan vertikal */
+            font-size: 14px;
+            color: #333;
             margin-bottom: 25px;
-        }
-        .invoice-info td, .billing-info td {
-            padding: 6px 10px;
-            vertical-align: top;
-        }
-        .invoice-info td strong {
-            color: #2667FF;
+            line-height: 1; /* biar tinggi baris sama */
         }
 
-        /* Table billing */
-        .billing-table {
+        /* Info pelanggan tanpa border dan ada jarak antar baris */
+        .invoice-info {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 25px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
         }
-        .billing-table th, .billing-table td {
-            padding: 12px 15px;
-            text-align: left;
+        .invoice-info td {
+            border: none;
+            padding: 6px 0;
+            font-size: 14px;
         }
-        .billing-table th {
-            background-color: #2667FF;
-            color: #fff;
-            font-weight: 600;
+        .invoice-info .label {
+            display: inline-block;
+            width: 200px; /* agar titik dua sejajar */
         }
-        .billing-table tr:nth-child(even) {
-            background-color: #f2f8ff;
+        .invoice-info tr + tr td {
+            padding-top: 8px;
         }
 
-        /* Footer */
+        /* Tabel detail paket */
+        table.package {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            background-color: #fff;
+        }
+        table.package, .package th, .package td {
+            border: 1px solid #555;
+        }
+        .package th, .package td {
+            padding: 10px;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        .package th {
+            background-color: #2667FF;
+            color: #fff;
+        }
+        /* Rata Kanan untuk kolom Total Harga di tabel detail */
+        .package td:last-child {
+            text-align: right;
+        }
+
+        /* Catatan */
+        .note {
+            margin-top: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Footer lebih ke bawah */
         .footer {
-            margin-top: 40px;
+            margin-top: 70px;
             text-align: center;
             font-size: 12px;
             color: #555;
@@ -97,70 +131,93 @@
 </head>
 <body>
 
-    <!-- Kop Surat -->
     <div class="kop-surat">
-        <h1>Borneo Network Center</h1>
+        <h1>PT Borneo Network Center</h1>
         <h2>Billing Mikrotik - PPPoE & Hotspot</h2>
         <p>Jl. Palm Raya, Ruko No. 6, RT 50 RW 07, Kel. Guntung Manggis, Landasan Ulin</p>
         <p>Banjarbaru, Kalimantan Selatan, Indonesia</p>
-    </div>
+    </div> 
 
-    <!-- Judul Invoice -->
-    <div class="invoice-title">INVOICE PEMBAYARAN</div>
+    <div class="content">
 
-    <!-- Info Pelanggan & Perusahaan -->
-    <table class="invoice-info">
-        <tr>
-            <td><strong>Nama Perusahaan:</strong> {{ $subscription->nama_perusahaan ?? '-' }}</td>
-            <td><strong>Nama Pelanggan:</strong> {{ $subscription->user->name ?? '-' }}</td>
-        </tr>
-        <tr>
-            <td><strong>No. Telepon:</strong> {{ $subscription->telepon ?? '-' }}</td>
-            <td><strong>Alamat:</strong> {{ $subscription->alamat ?? '-' }}</td>
-        </tr>
-        <tr>
-            <td><strong>Kabupaten:</strong> {{ $subscription->kabupaten ?? '-' }}</td>
-            <td><strong>Provinsi:</strong> {{ $subscription->provinsi ?? '-' }}</td>
-        </tr>
-    </table>
+        <div class="invoice-title">INVOICE BUKTI PEMBAYARAN</div>
 
-    <!-- Detail Paket -->
-    <table class="billing-table">
-        <thead>
+        <br>
+        <br>
+
+        <table class="invoice-info">
             <tr>
-                <th>Nama Paket</th>
-                <th>Siklus</th>
-                <th>Subdomain</th>
-                <th>Data Center</th>
-                <th>Total Harga</th>
+                <td><span class="label"><strong>No Invoice</strong></span>: <i>BNC-658-00-07-{{ $subscription->id }}</i></td>
             </tr>
-        </thead>
-        <tbody>
             <tr>
-                <td>{{ $subscription->paket->nama ?? '-' }}</td>
-                <td>{{ ucfirst($subscription->siklus ?? '-') }}</td>
-                <td>{{ $subscription->subdomain_url ?? '-' }}.bncradius.id</td>
-                <td>{{ $subscription->data_center ?? '-' }}</td>
-                <td>Rp {{ number_format($subscription->harga, 0, ',', '.') }}</td>
+                <td><span class="label"><strong>Nama Perusahaan</strong></span>: {{ $subscription->nama_perusahaan ?? '-' }}</td>
             </tr>
-        </tbody>
-    </table>
+            <tr>
+                <td><span class="label"><strong>Nama Pelanggan</strong></span>: {{ $subscription->user->name ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td><span class="label"><strong>No. Telp</strong></span>: {{ $subscription->telepon ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td><span class="label"><strong>Alamat Perusahaan</strong></span>: {{ $subscription->alamat ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td><span class="label"><strong>Kabupaten/Kota</strong></span>: {{ $subscription->kabupaten ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td><span class="label"><strong>Provinsi</strong></span>: {{ $subscription->provinsi ?? '-' }}</td>
+            </tr>
+            <tr>
+                <td><span class="label"><strong>Tanggal Pembuatan</strong></span>: {{ $subscription->created_at->format('d M Y') }}</td>
+            </tr>
+        </table>
 
-    <!-- Status & Tanggal -->
-    <table class="invoice-info">
-        <tr>
-            <td><strong>Tanggal Transaksi:</strong> {{ $subscription->created_at->format('d M Y') }}</td>
-            <td><strong>Status Pembayaran:</strong> {{ ucfirst($subscription->status ?? '-') }}</td>
-        </tr>
-    </table>
+        <br>
+        <br>
 
-    <!-- Catatan -->
-    <p>Terima kasih telah melakukan pembayaran dan berlangganan layanan kami. Silakan simpan lembar invoice ini sebagai bukti pembayaran yang sah.</p>
+        <table class="package">
+            <thead>
+                <tr>
+                    <th>Nama Paket</th>
+                    <th>Siklus</th>
+                    <th>Subdomain</th>
+                    <th>Data Center</th>
+                    <th>Total Harga</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $subscription->paket->nama ?? '-' }}</td>
+                    <td>{{ ucfirst($subscription->siklus ?? '-') }}</td>
+                    <td>{{ $subscription->subdomain_url ?? '-' }}.bncradius.id</td>
+                    <td>{{ $subscription->data_center ?? '-' }}</td>
+                    <td>Rp {{ number_format($subscription->harga, 0, ',', '.') }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p><strong>BNC Network Center</strong></p>
-        <p>&copy; {{ date('Y') }} All Rights Reserved</p>
+        <br>
+        
+        <p class="note">
+            Terima kasih telah melakukan pembayaran dan berlangganan layanan kami. 
+            Silakan simpan lembar invoice ini sebagai bukti pembayaran yang sah.
+        </p>
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <div class="footer">
+            <p><strong>BNC Network Center</strong></p>
+            <p>&copy; {{ date('Y') }} All Rights Reserved</p>
+        </div>
     </div>
 
 </body>

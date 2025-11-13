@@ -98,7 +98,6 @@
                             <th>Limit Hutang</th>
                             <th>Kode Unik</th>
                             <th>Komisi</th>
-                            <th>Login Terakhir</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -115,8 +114,6 @@
                                 <td>{{ number_format($reseller->limit_hutang ?? 0, 0, ',', '.') }}</td>
                                 <td>{{ $reseller->kode_unik ?? '-' }}</td>
                                 <td>{{ number_format($reseller->komisi ?? 0, 0, ',', '.') }}</td>
-                                <td>{{ $reseller->login_terakhir ? $reseller->login_terakhir->format('d-m-Y H:i') : '-' }}
-                                </td>
                                 <td class="flex justify-center items-center gap-2 align-middle">
                                     <a href="{{ route('resellers.edit', $reseller->id) }}"
                                         class="flex items-center justify-center gap-1 bg-gradient-to-r from-blue-400 to-blue-500 text-white text-sm px-3 py-1 rounded-md font-medium shadow-sm hover:from-blue-500 hover:to-blue-600 transition-all duration-200">

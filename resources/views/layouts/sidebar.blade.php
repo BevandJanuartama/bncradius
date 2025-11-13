@@ -81,13 +81,13 @@
               <i class="fas fa-microchip w-5"></i><span>Instances</span>
             </a>
           </li>
-          <li>
+          {{-- <li>
             <a href="/remote"
               class="menu-item flex items-center space-x-3 p-3 rounded-lg
               {{ Request::is('remote') ? 'text-[#3F8EFC] bg-[#3F8EFC]/10' : 'text-gray-600 hover:text-[#3F8EFC]' }}">
               <i class="fas fa-shield-alt w-5"></i><span>Remote Access</span>
             </a>
-          </li>
+          </li> --}}
           <li>
             <a href="/invoice"
               class="menu-item flex items-center space-x-3 p-3 rounded-lg

@@ -8,17 +8,21 @@ use Illuminate\Support\Facades\DB;
 
 class StokVoucherController extends Controller
 {
+    /**
+     * Menampilkan daftar seluruh stok voucher beserta data relasinya.
+     * Termasuk juga perhitungan total jumlah stok, total komisi, dan total nilai jual.
+     */
     public function index()
     {
-        // Ambil semua data voucher beserta relasinya
+        // Ambil semua data voucher beserta relasinya (reseller dan profile)
         $stokVouchers = StokVoucher::with(['reseller', 'profileVoucher'])->get();
 
-        // === Data untuk card statistik ===
-        $jumlahStok = StokVoucher::count();           // Jumlah total voucher
+        // Hitung statistik untuk card summary di dashboard
+        $jumlahStok = StokVoucher::count();           // Total jumlah voucher
         $totalKomisi = StokVoucher::sum('komisi');    // Total komisi semua voucher
-        $totalNilaiJual = StokVoucher::sum('hjk');    // Total harga jual semua voucher
+        $totalNilaiJual = StokVoucher::sum('hjk');    // Total harga jual keseluruhan
 
-        // Kirim semua data ke view
+        // Kirim data ke view
         return view('admin-sub.voucher.stok-voucher.index', compact(
             'stokVouchers',
             'jumlahStok',
@@ -27,8 +31,10 @@ class StokVoucherController extends Controller
         ));
     }
 
-
-
+    /**
+     * Menampilkan form pembuatan stok voucher baru.
+     * Mengambil data reseller dan profile voucher untuk dropdown pilihan.
+     */
     public function create()
     {
         $resellers = \App\Models\Reseller::orderBy('nama_lengkap')->get();
@@ -37,8 +43,13 @@ class StokVoucherController extends Controller
         return view('admin-sub.voucher.stok-voucher.create', compact('resellers', 'profiles'));
     }
 
+    /**
+     * Menyimpan data stok voucher baru ke database.
+     * Menghasilkan banyak voucher sekaligus berdasarkan jumlah yang dimasukkan user.
+     */
     public function store(Request $request)
     {
+        // Validasi input dari form
         $request->validate([
             'reseller_id' => 'nullable|exists:resellers,id',
             'profile_voucher_id' => 'required|exists:profile_vouchers,id',
@@ -57,31 +68,36 @@ class StokVoucherController extends Controller
         ]);
 
         try {
+            // Mulai transaksi database agar aman jika gagal di tengah
             DB::beginTransaction();
 
             $jumlah = $request->jumlah;
+            // Ambil semua input kecuali jumlah (karena jumlah digunakan untuk looping)
             $baseData = $request->except(['jumlah']);
+            // Konversi saldo YES/NO menjadi boolean
             $baseData['saldo'] = $request->saldo === 'YES' ? true : false;
 
-            // Set otomatis untuk semua voucher batch
+            // Set atribut default untuk setiap voucher
             $baseData['admin'] = 'administrator';
             $baseData['mac'] = 'open';
             $baseData['tgl_aktif'] = now();
             $baseData['tgl_expired'] = now()->addMonths(4);
             $baseData['tgl_pembuatan'] = now();
 
-            // Generate kode batch 10 angka acak (1 kali generate untuk semua)
+            // Kode batch unik 10 digit acak untuk satu batch pembuatan voucher
             $kodeBatch = str_pad(mt_rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
             $baseData['kode'] = $kodeBatch;
 
+            // Hitung total komisi dan total HPP keseluruhan batch
             $totalKomisi = $request->komisi * $jumlah;
             $totalHpp = $request->hpp * $jumlah;
 
-            $createdVouchers = [];
-            $usedCodes = [];
+            $createdVouchers = []; // Menyimpan voucher yang berhasil dibuat
+            $usedCodes = [];       // Menyimpan kode yang sudah digunakan agar tidak duplikat
 
+            // Loop sebanyak jumlah voucher yang diminta
             for ($i = 0; $i < $jumlah; $i++) {
-                // Generate username unik
+                // Generate kode unik untuk username
                 do {
                     $kode = $this->generateKode($request->prefix, $request->kode_kombinasi, $request->panjang_karakter);
                 } while (in_array($kode, $usedCodes) || StokVoucher::where('username', $kode)->exists());
@@ -90,10 +106,12 @@ class StokVoucherController extends Controller
                 $voucherData = $baseData;
                 $voucherData['username'] = $kode;
 
-                // Password
+                // Tentukan password sesuai jenis voucher
                 if ($request->jenis_voucher === 'username_password') {
+                    // Jika jenisnya sama, password = username
                     $voucherData['password'] = $kode;
                 } else {
+                    // Jika berbeda, buat password unik juga
                     do {
                         $password = $this->generateKode($request->prefix, $request->kode_kombinasi, $request->panjang_karakter);
                     } while ($password === $kode || in_array($password, $usedCodes));
@@ -101,22 +119,27 @@ class StokVoucherController extends Controller
                     $usedCodes[] = $password;
                 }
 
+                // Tambahkan data tambahan
                 $voucherData['jumlah'] = 1;
                 $voucherData['total_komisi'] = $request->komisi;
                 $voucherData['total_hpp'] = $request->hpp;
 
+                // Simpan voucher ke database
                 $voucher = StokVoucher::create($voucherData);
                 $createdVouchers[] = $voucher;
             }
 
+            // Commit transaksi jika semua berhasil
             DB::commit();
 
+            // Buat pesan sukses dengan informasi total HPP dan komisi
             $message = "Berhasil membuat {$jumlah} voucher dengan total HPP: " . number_format($totalHpp, 2) .
                     " dan total komisi: " . number_format($totalKomisi, 2);
 
             return redirect()->route('stokvoucher.index')->with('success', $message);
 
         } catch (\Exception $e) {
+            // Rollback jika ada error
             DB::rollBack();
             return redirect()->back()
                 ->withInput()
@@ -124,25 +147,35 @@ class StokVoucherController extends Controller
         }
     }
 
-
+    /**
+     * Fungsi pembantu untuk generate kode acak voucher.
+     * Menggabungkan prefix (jika ada) dengan karakter acak dari kombinasi yang diberikan.
+     */
     private function generateKode($prefix, $kombinasi, $length)
     {
         $length = max(1, $length);
         $random = '';
 
-        // Generate random string character by character untuk lebih random
+        // Bangkitkan karakter acak satu per satu
         for ($i = 0; $i < $length; $i++) {
             $random .= $kombinasi[rand(0, strlen($kombinasi) - 1)];
         }
 
+        // Hasil akhir berupa prefix + string acak
         return ($prefix ?? '') . $random;
     }
 
+    /**
+     * Menampilkan detail voucher tertentu.
+     */
     public function show(StokVoucher $stokVoucher)
     {
         return view('admin-sub.voucher.stok-voucher.show', compact('stokVoucher'));
     }
 
+    /**
+     * Menampilkan form edit voucher.
+     */
     public function edit(StokVoucher $stokVoucher)
     {
         $resellers = \App\Models\Reseller::orderBy('nama_lengkap')->get();
@@ -151,8 +184,12 @@ class StokVoucherController extends Controller
         return view('admin-sub.voucher.stok-voucher.edit', compact('stokVoucher', 'resellers', 'profiles'));
     }
 
+    /**
+     * Memperbarui data voucher yang sudah ada.
+     */
     public function update(Request $request, StokVoucher $stokVoucher)
     {
+        // Validasi input
         $request->validate([
             'username' => 'required|unique:stok_vouchers,username,' . $stokVoucher->id,
             'password' => 'required|string',
@@ -167,10 +204,11 @@ class StokVoucherController extends Controller
             'outlet' => 'nullable|string',
         ]);
 
+        // Ambil data request untuk update
         $updateData = $request->all();
         $updateData['saldo'] = $request->saldo === 'YES' ? true : false;
 
-        // Update total fields untuk voucher individual
+        // Update total komisi dan HPP per voucher
         $updateData['total_komisi'] = $request->komisi;
         $updateData['total_hpp'] = $request->hpp;
 
@@ -179,6 +217,9 @@ class StokVoucherController extends Controller
         return redirect()->route('stokvoucher.index')->with('success', 'Stok voucher berhasil diperbarui');
     }
 
+    /**
+     * Menghapus satu voucher.
+     */
     public function destroy(StokVoucher $stokVoucher)
     {
         $stokVoucher->delete();
@@ -186,7 +227,7 @@ class StokVoucherController extends Controller
     }
 
     /**
-     * Bulk delete vouchers
+     * Menghapus beberapa voucher sekaligus (bulk delete).
      */
     public function bulkDestroy(Request $request)
     {
@@ -195,6 +236,7 @@ class StokVoucherController extends Controller
             'voucher_ids.*' => 'exists:stok_vouchers,id'
         ]);
 
+        // Hapus semua id yang dikirim
         StokVoucher::whereIn('id', $request->voucher_ids)->delete();
 
         return redirect()->route('stokvoucher.index')

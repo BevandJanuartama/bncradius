@@ -111,7 +111,7 @@
                                     <td>
                                         <div class="font-semibold text-gray-900">{{ $subs->nama_perusahaan }}</div>
                                         <div class="text-xs text-indigo-600 mt-1">
-                                            User: {{ $subs->user->name ?? 'User Dihapus' }}
+                                            Pelanggan: {{ $subs->user->name ?? 'User Dihapus' }}
                                         </div>
                                     </td>
                                     <td>{{ $subs->paket->nama ?? 'N/A' }} ({{ ucfirst($subs->siklus) }})</td>
